@@ -34,3 +34,4 @@ BEGIN --inicia la logica del procedimiento almacenado
  dbms_output.put_line('SE INSERTO CON EXITO '||VALOR);
  END;
  /
+ SELECT * FROM DANCE;
