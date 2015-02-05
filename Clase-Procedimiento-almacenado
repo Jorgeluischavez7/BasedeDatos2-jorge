@@ -26,7 +26,7 @@ BEGIN --inicia la logica del procedimiento almacenado
  / 
  
  --Insertar en la tabla tabla DANCE
- set serveroutput on;
+ set serveroutput on;--Habilita las salidas
  DECLARE 
  VALOR INTEGER;
  BEGIN
