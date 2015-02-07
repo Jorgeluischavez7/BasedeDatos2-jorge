@@ -1,1 +1,38 @@
 --Creamos la tabla Pelicula.
+
+create table pelicula (id_pelicula integer, titulo varchar2(120), sinopsis varchar2(500) constraint pk_id_pelicula primary key (id_pelicula));  
+
+   --Creamos la secuencia correspondiente  
+ 
+  create sequence sec_pelicula  
+  start with 1  
+  increment by 1  
+  nomaxvalue;  
+   
+ /*  
+ Creamos el procedimiento almacenado que nos enlazara la secuencia con la tabla pelicula
+ */  
+
+ CREATE OR REPLACE PROCEDURE GUARDAR_pelicula(MY_ID OUT INTEGER, MY_PELICULA_TITULO IN VARCHAR2, MY_SINOPSIS VARCHAR2)  
+ AS  
+ BEGIN --inicia la logica del procedimiento almacenado 
+   
+  --NEXTVAL; donde se quedo la secuencia o proximo valor. 
+  --FROM DUAL; tabla virtual, deposita los registros previamente.  
+  
+  SELECT SEC_PELICULA.NEXTVAL INTO  MY_ID FROM DUAL;  
+  INSERT INTO PELICULA(ID_PELICULA, TITULO, SINOPSIS) VALUES(MY_ID, MY_PELICULA_TITULO, MY_SINOPSIS);  
+  END;  
+  /  
+   
+  --Insertar en la tabla tabla PELICULA
+  
+29  set serveroutput on;--Habilita las salidas 
+30  DECLARE  
+31  VALOR INTEGER; 
+32  BEGIN 
+33  guardar_pelicula(VALOR,'Avengers'); 
+34  dbms_output.put_line('SE INSERTO CON EXITO LA PELICULA  '||VALOR); 
+35  END; 
+36  / 
+37  SELECT * FROM PELICULA; 
