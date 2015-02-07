@@ -1,0 +1,24 @@
+Ejercicio 1:
+EJERCICIOS A REALIZAR 
+
+a. Crear la tabla pelicula con los siguientes campos 
+1. id_pelicula integer, primary key 
+2. titulo varchar2(180) 
+3 sinopsis varchar2(400) 
+ 
+b. Crear la tabla sala con los siguientes campos 
+1. id_sala integer primary key 
+2. id_pelicula foreign key 
+3. numero_asientos integer 
+ 
+c. Asociar a cada tabla una secuencia 
+d. Crear un procedimiento para guardar una pelicula 
+e. Agrega 3 peliculas que te gustaron 
+f. Crea un procedimiento para guardar sala 
+g. Agrega 3 salas. cada sala debe tener como numero de asientos 10. 
+ 
+RETO DE LA SEMANA. LOS DOS PRIMEROS QUE LO SUBAN A GITHUB 1 PUNTO SOBRE EL PARCIAL!!!! 
+h. crea un procedimiento que se llame comparar boletos. Debe tener la logica siguiente, se debe pasar como argumento el 
+el titulo de la pelicula y la sala en la que se encuentra y el numero de boletos. El procedimiento debe actualizar la tabla  
+sala, debe de restar el numero de asientos al numero actual, y dejar el numero de asientos al que se obtenga de la resta.  
+Si en numero de asientos es menor que cero debe lanzar un error e impedir que se realize la actualizacion 
