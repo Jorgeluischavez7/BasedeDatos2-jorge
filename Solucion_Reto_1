@@ -1,0 +1,80 @@
+
+ 
+create table pelicula (id_pelicula integer, titulo varchar2(180), 
+sinopsis varchar2(400), constraint pk_id_pelicula primary key (id_pelicula)); 
+
+ 
+create sequence secuencia_pelicula 
+start with 1 
+increment by 1   
+ nomaxvalue; 
+ 
+create table sala(id_sala integer, id_pelicula integer, numero_asientos integer, 
+constraint pk_id_sala primary key (id_sala), 
+constraint fk_id_pelicula_sala foreign key (id_pelicula) references pelicula(id_pelicula)); 
+ 
+ 
+create sequence secuencia_sala 
+start with 1 
+increment by 1 
+nomaxvalue; 
+ 
+ 
+create or replace procedure guardar_pelicula(My_id_pelicula OUT integer,  
+my_titulo IN varchar2, my_sinopsis In varchar2) 
+as begin 
+select secuencia_pelicula.nextval into my_id_pelicula from dual; 
+insert into pelicula values(my_id_pelicula, my_titulo, my_sinopsis); 
+end; 
+/ 
+create or replace procedure guardar_sala(my_id_sala OUT integer,  
+my_id_pelicula IN integer, my_numero_asientos In integer) 
+as  
+begin 
+select secuencia_sala.nextval into my_id_sala from dual; 
+insert into sala values(my_id_sala, My_id_pelicula, my_numero_asientos); 
+end; 
+/ 
+ 
+ 
+declare 
+valor integer; 
+begin 
+guardar_pelicula(valor,'El señor de los anillos','Fue filmada en un hermoso pais, New Zeland'); 
+end; 
+/ 
+
+ 
+declare 
+valor integer; 
+begin 
+guardar_sala(valor, 3,10); 
+end; 
+/ 
+select * from sala; 
+select * from pelicula; 
+ 
+
+create or replace procedure comprar_boletos(my_titulo in varchar2, my_id_sala IN integer, 
+my_numero_boletos IN integer) as 
+disponibles integer; 
+begin 
+--Vemos cuantos asientos tenemos 
+select numero_asientos into disponibles from sala where id_sala=my_id_sala; 
+--Checamos que lo numero_asientos no sean menores que my_numero_boletos 
+if disponibles - my_numero_boletos < 0 then 
+raise_application_error(-20001,'NO te puedo dar ese nuemro de boletos solo tengo disponibles ' ||disponibles); 
+else 
+update sala set numero_asientos=numero_asientos-my_numero_boletos where id_sala=my_id_sala; 
+dbms_output.put_line('Ya esta tus boletos'); 
+end if; 
+end; 
+/ 
+ 
+   
+set serveroutput on; 
+begin 
+comprar_boletos('nada',1,1); 
+end; 
+/ 
+select * from sala where id_sala=1; 
