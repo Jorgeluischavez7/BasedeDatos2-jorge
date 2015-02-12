@@ -1,0 +1,25 @@
+create table empleado(id integer, nombre varchar2(120), sueldo float);
+insert into empleado values(5, 'lorena', 9500 );
+select * from empleado;
+update empleado set sueldo=2000 where id=2;
+
+set serveroutput on;
+declare
+nuevo_sueldo float;
+begin
+select sueldo into nuevo_sueldo from empleado where id=2;
+dbms_output.put_line('El sueldo seleccionado es: '||nuevo_sueldo);
+end;
+/
+--Operaciones fila por fila: Cursores
+
+--declaracion de un cursor: es una variable
+declare
+cursor cursor_empleado is select * from empleado;--aqui se pueden poner condiciones (como rangos)
+begin
+--para iterar el curso es por medio de ciclos FOR.
+for fila in cursor_empleado loop--el limite va e n el cursor
+dbms_output.put_line('mensajito  ' ||fila.nombre);--se accede por medio del cursor.
+end loop;
+end;
+/ 
