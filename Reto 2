@@ -29,6 +29,6 @@ begin
 for aumento in cursor_empleado loop
 ((aumento.sueldo * .05)+aumento.sueldo)= sueldo_aumentado;
 select id_empleado, nombre, sueldo as Aumento_del_5% from empleados;
-end loop;
+end loop;--
 end;
 /
