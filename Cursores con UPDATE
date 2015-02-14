@@ -1,0 +1,21 @@
+create table empleado(id integer, nombre varchar2(120), sueldo float ); 
+insert into empleado values(3, 'jorge', 9800);
+set serveroutput on;
+select * from empleado;
+
+declare 
+--se declara cursor
+cursor cursor_actualizar_emp is select * from empleado for update of sueldo;--para borrar o actualizar(cuando no es de solo lectura y se aplica un cambio)
+begin
+
+for rec in cursor_actualizar_emp loop
+  if rec.sueldo > 6000 then
+  update empleado set sueldo=rec.sueldo + 2000 where current of cursor_actualizar_emp;
+  else 
+    update empleado set sueldo=rec.sueldo + 1000 where current of cursor_actualizar_emp;
+end if;
+end loop;
+end;
+/
+
+select * from empleado;
