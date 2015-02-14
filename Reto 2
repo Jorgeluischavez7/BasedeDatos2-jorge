@@ -1,0 +1,34 @@
+
+
+create table empleado(id_empleado integer, nombre varchar2(120), sueldo float constraint pk_id_empleado primary key (id_empleado));
+inser into empleado values(1, 'Sandra', 6500),
+(2, 'Julio', 5800),(3, 'Lilian', 4900),(4, 'Jessica', 3700),(5, 'Jorge', 9500);
+
+--se crea la secuencia que corresponde a la tabla pelicula
+
+create sequence sec_empleado
+start with 1
+increment by 1
+nomaxvalue;
+
+--Ahora se crea el procedimiento almacenado que nos enlaza la secuencia con la tabla
+
+create or replace procedure reporte_empleado(my_id_empleado out integer, my_nombre out varchar2, my_sueldo out float )
+as
+begin
+select sec_empleado.nextval into my_id_empleado from dual;
+insert into empleado(id_emplado, nombre, sueldo)values(my_id_empleado, my_nombre, my_sueldo);
+end;
+/
+
+declare
+sueldo_aumentado integer;
+
+cursor cursor_empleado is select * from empleado;
+begin
+for aumento in cursor_empleado loop
+((aumento.sueldo * .05)+aumento.sueldo)= sueldo_aumentado;
+select id_empleado, nombre, sueldo as Aumento_del_5% from empleados;
+end loop;
+end;
+/
