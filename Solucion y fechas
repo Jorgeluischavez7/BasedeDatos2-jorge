@@ -1,0 +1,306 @@
+/* vas a crear todas las tablas que esta a continuacion */
+CREATE
+  TABLE libros
+  (
+    book_id          INTEGER,
+    isbn             VARCHAR2(13),
+    titulo           VARCHAR2(200),
+    resumen          VARCHAR2(2000),
+    autor            VARCHAR2(200),
+    fecha_publicacion DATE,
+    num_pag          NUMBER
+  );
+CREATE
+  TABLE EMPLEADO_VENTAS
+  (
+    id_cliente     NUMBER,
+    nombre_cliente VARCHAR2 (100),
+    SUELDO_BASE    NUMBER,
+    CONSTRAINT PK_ID_CLIENTE PRIMARY KEY (ID_CLIENTE)
+  );
+INSERT
+INTO
+  EMPLEADO_VENTAS VALUES
+  (
+    1,
+    'Juan',
+    5200
+  );
+INSERT
+INTO
+  EMPLEADO_VENTAS VALUES
+  (
+    2,
+    'Petra',
+    4200
+  );
+INSERT
+INTO
+  EMPLEADO_VENTAS VALUES
+  (
+    3,
+    'Panfilo',
+    6400
+  );
+INSERT
+INTO
+  EMPLEADO_VENTAS VALUES
+  (
+    4,
+    'Anacleta',
+    5700
+  );
+INSERT
+INTO
+  EMPLEADO_VENTAS VALUES
+  (
+    5,
+    'Chana',
+    4600
+  );
+SELECT
+  *
+FROM
+  EMPLEADO_VENTAS;
+CREATE
+  TABLE SUCURSAL
+  (
+    ID_SUCURSAL NUMBER,
+    ID_CLIENTE  NUMBER,
+    NOMBRE      VARCHAR2(120),
+    TELEFONO    VARCHAR2(40),
+    VENTA       NUMBER,
+    CONSTRAINT PK_ID_SUCURSAL PRIMARY KEY (ID_SUCURSAL),
+    CONSTRAINT FK_ID_CLIENTE1 FOREIGN KEY (ID_CLIENTE) REFERENCES
+    EMPLEADO_VENTAS (ID_CLIENTE)
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    1,1,
+    'LAS AMERICAS',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    2,1,
+    'PLAZA ARAGON',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    3,1,
+    'PLAZA COYOACAN',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    4,1,
+    'PERISUR',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    5,2,
+    'LAS AMERICAS',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    6,2,
+    'PERISUR',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    7,3,
+    'PLAZA ARAGON',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    8,4,
+    'PLAZA COYOACAN',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    9,4,
+    'LAS AMERICAS',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    10,5,
+    'LAS AMERICAS',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    11,5,
+    'PERISUR',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    12,5,
+    'PERISUR',
+    '67 55 66 77',
+    4000
+  );
+INSERT
+INTO
+  SUCURSAL VALUES
+  (
+    13,5,
+    'PLAZA COYOACAN',
+    '67 55 66 77',
+    4000
+  );
+SELECT
+  EMPLEADO_VENTAS.ID_CLIENTE,
+  EMPLEADO_VENTAS.NOMBRE_CLIENTE,
+  SUCURSAL.NOMBRE
+FROM
+  EMPLEADO_VENTAS
+JOIN SUCURSAL
+ON
+  EMPLEADO_VENTAS.ID_CLIENTE=SUCURSAL.ID_CLIENTE;
+/*
+2 ESTA ES UNA SOLUCION AL EJERCICIO 3 :D
+3 */
+SET serveroutput ON;
+DECLARE
+  id_actual     INTEGER;
+  total_actual  INTEGER;
+  nombre_actual VARCHAR2(120);
+  CURSOR cur
+  IS
+    SELECT
+      id_cliente,
+      venta
+    FROM
+      sucursal
+    ORDER BY
+      id_cliente;
+BEGIN
+  id_actual   :=1;
+  total_actual:=0;--si no vendio nada
+  SELECT
+    nombre_cliente --se deposita nombre_cliente en nombre_actual
+  INTO
+    nombre_actual
+  FROM
+    empleado_ventas
+  WHERE
+    id_cliente=id_actual;--aqui se delimita el cursor de una sola ocurrencia. 
+  FOR fila IN cur --fila es cualquier nombre y (cur es el limite, nombre del cursor)
+  LOOP
+    IF id_actual   =fila.id_cliente THEN
+      total_actual:=total_actual+fila.venta;
+    ELSE
+      dbms_output.put_line('nombre '||nombre_actual ||'suma total:'||
+      total_actual);
+      id_actual   :=fila.id_cliente;--lo quita del id actual
+      total_actual:=fila.venta;
+      SELECT
+        nombre_cliente--se vuelve actualizar el nuevo cliente
+      INTO
+        nombre_actual
+      FROM
+        empleado_ventas
+      WHERE
+        id_cliente=id_actual;
+    END IF;
+  END LOOP;
+  dbms_output.put_line('nombre '||nombre_actual ||'  suma total:'||total_actual);--es para que aparesca chana
+END;
+/
+/*
+31 SOLUCION CON UNION DE TABLAS USANDO LA PALABRA RESERVADA TYPE
+32 */
+SET SERVEROUTPUT ON;
+DECLARE
+  suma_sueldo NUMBER;
+  nombre_empleado EMPLEADO_VENTAS.NOMBRE_CLIENTE%TYPE;--es cuando no se sabe el tipo de la variable solo mayusculas
+  --nombre x varchar2(120);
+  CURSOR CURSOR_VENDEDOR
+  IS
+    SELECT
+      EMPLEADO_VENTAS.ID_CLIENTE,
+      EMPLEADO_VENTAS.NOMBRE_CLIENTE,
+      SUCURSAL.NOMBRE,
+      SUCURSAL.VENTA
+    FROM
+      EMPLEADO_VENTAS
+    JOIN SUCURSAL
+    ON
+      EMPLEADO_VENTAS.ID_CLIENTE=SUCURSAL.ID_CLIENTE;
+BEGIN
+  FOR REC IN CURSOR_VENDEDOR
+  LOOP
+    IF rec.nombre_cliente = nombre_empleado THEN
+      suma_sueldo        :=REC.VENTA + suma_sueldo;
+    ELSE
+      DBMS_OUTPUT.PUT_LINE(nombre_empleado||' : '||suma_sueldo);
+      suma_sueldo    :=REC.VENTA;
+      nombre_empleado:=REC.nombre_cliente;
+    END IF;
+  END LOOP;
+  DBMS_OUTPUT.PUT_LINE(nombre_empleado||' : '||suma_sueldo);
+END;
+/
+--_____________________________________________________
+--tipos de fechasdb
+set serveroutput on;
+begin
+dbms_output.put_line('current date time es: '|| current_date);
+dbms_output.put_line('current time stamp time es: '|| current_timestamp);
+dbms_output.put_line('local timestamp es:   '|| localtimestamp);
+dbms_output.put_line('sysdate es: '|| sysdate);
+dbms_output.put_line('systimestamp es: '|| systimestamp);
+end;
+/
+
+drop table libros;
+/*
+CURRENT_DATE --fecha acttual
+CURRENT_TIMESTAMP te da la reion
+LOCALTIMESTAMP
+SYSDATE --Hora del sistema
+SYSTIMESTAMP
+*/
