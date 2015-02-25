@@ -24,15 +24,15 @@ create table pelicula (id_pelicula integer, titulo varchar2(120), sinopsis varch
   INSERT INTO PELICULA(ID_PELICULA, TITULO, SINOPSIS) VALUES(MY_ID, MY_PELICULA_TITULO, MY_SINOPSIS);  
   END;  
   /  
-   
-  --Insertar en la tabla tabla PELICULA
+
+ --Insertar en la tabla tabla PELICULA
   
-29  set serveroutput on;--Habilita las salidas 
-30  DECLARE  
-31  VALOR INTEGER; 
-32  BEGIN 
-33  guardar_pelicula(VALOR,'Avengers'); 
-34  dbms_output.put_line('SE INSERTO CON EXITO LA PELICULA  '||VALOR); 
-35  END; 
-36  / 
-37  SELECT * FROM PELICULA; 
+ set serveroutput on;--Habilita las salidas 
+ DECLARE  
+ VALOR INTEGER; 
+ BEGIN 
+ guardar_pelicula(VALOR,'Avengers'); 
+ dbms_output.put_line('SE INSERTO CON EXITO LA PELICULA  '||VALOR); 
+ END; 
+ / 
+ SELECT * FROM PELICULA; 
