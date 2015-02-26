@@ -30,7 +30,7 @@ CREATE OR REPLACE PROCEDURE guardarlibros
 AS
   my_fecha DATE;
 BEGIN
-  my_fecha:=to_date(''||dia||'-'||mes||'-'||anio);
+  my_fecha:=to_date(''||dia||'-'||mes||'-'||anio);--en vez de to date puede ser to char
   SELECT sec_libros.nextval INTO my_id FROM dual;
   INSERT
   INTO libros VALUES
@@ -52,7 +52,7 @@ END;
 DECLARE
   valor_id INTEGER;
 BEGIN
-  guardarlibros(valor_id, '1234','Abrupt climate change', 'Trata de que todos vamos a morir por contaminadores','John Wallace',27,'jan',2010,455);
+  guardarlibros(valor_id, '1234','Abrupt climate change', 'Trata de que todos vamos a morir por contaminadores','John Wallace',27,'feb',2010,455);
 END;
 /
 
