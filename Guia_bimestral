@@ -1,0 +1,27 @@
+create table Customer (customer_id integer, nombre varchar2(80), phone_number varchar2(70) constraint pk_customer_id primary key (customer_id));
+--Se crea la secuencia correspondiente a la tabla customer
+create sequence sec_customer
+start with 1
+increment by 1
+nomaxvalue;
+
+create table Orden (orden_id integer, customer_id integer, total float constraint pk_orden_id primary key (oeden_id) 
+constraint fk_customer_id foreign key (customer_id) references Customer(customer_id));
+
+--Secuencia que corresponde a la tabla Orden
+create sequence sec_orden
+start with 1
+increment by 1
+nomaxvalue;
+
+set serveroutput on;
+
+create or replace procedure guardar_customer(my_customer_id out integer, my_nombre in varchar2, my_phone_number in varchar )
+as 
+for i in 1..10 loop
+insert into Customer values (i, dbms_random.string('l',8), '01-800-XXX')
+begin
+select sec_customer.nextval into my_customer_id from dual;
+insert into Customer values (my_customer, my_nombre, my_phone_number)
+end;
+/
