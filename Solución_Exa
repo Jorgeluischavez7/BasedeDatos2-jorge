@@ -40,6 +40,3 @@ for(xxx) in cur_ex loop
 my_iva:= xxx.subtotal*.16;
 update honorario set iva= xxx.my_iva, isr=my_ret_iva; -- se separa con comas cada campo para actualizar
 end loop;
-
-
-for xxx
