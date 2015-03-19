@@ -1,0 +1,33 @@
+--disparadores DML de tipo before.
+--1)Crear la siguiente tabla
+create table usuario_xxx(id integer, edad integer);
+--2)Crear un disparador que impida insertar usuarios menores de edad(18 años)
+create or replace trigger disparador_xxx before insert on usuario_xxx
+for each row
+begin
+--logica transaccional
+--logica de persistencia
+--if :new logica en algo nuevo
+if :new.edad<18 then
+raise_application_error(-20001, 'lo sentimos eres un pequeño pervertido');
+end if;
+end;
+/
+insert into usuario_xxx values(1,16);
+select * from usuario_xxx;
+
+--2) disparador de tipo before en un update
+create table trabajador(id integer, nombre varchar2(120), sueldo float);
+--2.1)insertar el siguiente registro
+insert into trabajador values (1, 'Ana', 4000);
+--2.2)Crear un disparador que al hacer el update en el sueldo automaticamente
+--sume al saldo que tenia al nuevo deposito;
+select * from trabajador;
+
+create or replace trigger actualizar_trabajador before update on trabajador
+for each row
+begin
+:new.sueldo:= :old.sueldo+:new.sueldo;
+end;
+/
+update trabajador set sueldo=6700 where id =1;
