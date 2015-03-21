@@ -1,0 +1,22 @@
+--1.-Diseño de la base de datos para insertar pelicula
+--2.-En la interfaz de usuario, para el software cargar el driver correspondiente a la base de datos
+--El driver es un conjunto de programa pre-fabricado que nos ayuda a conectar a un cliente a una BD.
+--3.-Probar que se conecta a oracle con nuestra interfaz.
+--Conexion a cliente JDBC y Framework-Hibernate-TopLink
+
+create table pelicula (id_pelicula integer, titulo varchar2(180),
+sinopsis varchar2(400), constraint pk_id_pelicula primary key (id_pelicula));
+
+create sequence secuencia_pelicula
+start with 1
+increment by 1
+nomaxvalue;
+
+
+create or replace procedure guardar_pelicula(My_id_pelicula OUT integer,
+my_titulo IN varchar2, my_sinopsis In varchar2)
+as begin
+select secuencia_pelicula.nextval into my_id_pelicula from dual;
+insert into pelicula values(my_id_pelicula, my_titulo, my_sinopsis);
+end;
+/
