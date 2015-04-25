@@ -1,0 +1,15 @@
+create table cervezas (id_cerveza integer, marca varchar2(100),
+nomCerveza varchar2(100), paisOrigen varchar2(100), estilo varchar2(100), constraint pk_id_cerveza primary key(id_cerveza));
+
+create sequence secuencia_cervezas
+start with 1
+increment by 1  
+nomaxvalue;
+
+create or replace procedure guardar_cerveza(My_id_cerveza OUT integer, 
+my_marca IN varchar2, my_nomCerveza In varchar2, my_paisOrigen In varchar2, my_estilo In varchar2)
+as begin
+select secuencia_cervezas.nextval into my_id_cerveza from dual;
+insert into cervezas values(my_id_cerveza, my_marca, my_nomCerveza, my_paisOrigen, my_estilo);
+end;
+/
